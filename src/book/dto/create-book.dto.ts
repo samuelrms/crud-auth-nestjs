@@ -1,5 +1,12 @@
-import { IsEnum, IsNotEmpty, IsNumber, IsString } from 'class-validator';
+import {
+  IsEmpty,
+  IsEnum,
+  IsNotEmpty,
+  IsNumber,
+  IsString,
+} from 'class-validator';
 import { Category } from '../schemas/book.schema';
+import { User } from 'src/auth/schema/user.schema';
 
 export class CreateBookDto {
   @IsNotEmpty()
@@ -23,4 +30,7 @@ export class CreateBookDto {
     message: 'Must be a valid category' + Object.values(Category) + '.',
   })
   readonly category: Category;
+
+  @IsEmpty({ message: 'You cannot specify user' })
+  readonly user: User;
 }

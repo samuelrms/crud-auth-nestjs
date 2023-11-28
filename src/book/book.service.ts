@@ -9,6 +9,7 @@ import { Model, isValidObjectId } from 'mongoose';
 
 import { Book } from './schemas/book.schema';
 import { BooksProps } from './types/books.types';
+import { User } from 'src/auth/schema/user.schema';
 
 @Injectable()
 export class BookService {
@@ -41,8 +42,9 @@ export class BookService {
     };
   }
 
-  async create(book: Book): Promise<Book> {
-    const createBook = await this.bookModel.create(book);
+  async create(book: Book, user: User): Promise<Book> {
+    const data = Object.assign(book, { user: user._id });
+    const createBook = await this.bookModel.create(data);
     return createBook;
   }
 
@@ -62,14 +64,15 @@ export class BookService {
     return book;
   }
 
-  async updateById(id: string, book: Book): Promise<Book> {
+  async updateById(id: string, book: Book, user: User): Promise<Book> {
+    const data = Object.assign(book, { user: user._id });
     const isValidId = isValidObjectId(id);
 
     if (!isValidId) {
       throw new BadRequestException('Please provide a valid id');
     }
 
-    const updateBook = await this.bookModel.findByIdAndUpdate(id, book, {
+    const updateBook = await this.bookModel.findByIdAndUpdate(id, data, {
       new: true,
       runValidators: true,
     });

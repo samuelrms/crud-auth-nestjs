@@ -7,12 +7,14 @@ import {
   Post,
   Put,
   Query,
+  UseGuards,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { SignUpDto } from './dto/signup.dto';
 import { LoginDto } from './dto/login.dto';
 import { ParsedUrlQuery } from 'node:querystring';
 import { User } from './schema/user.schema';
+import { AuthGuard } from '@nestjs/passport';
 
 @Controller('auth')
 export class AuthController {
@@ -29,6 +31,7 @@ export class AuthController {
   }
 
   @Get('users')
+  @UseGuards(AuthGuard())
   async findAllUsers(
     @Query() query: ParsedUrlQuery,
   ): Promise<{ users: User[]; total: number }> {
@@ -36,11 +39,13 @@ export class AuthController {
   }
 
   @Get('user/:id')
+  @UseGuards(AuthGuard())
   async findUserById(@Param('id') id: string): Promise<User> {
     return this.authService.findById(id);
   }
 
   @Put('user/:id')
+  @UseGuards(AuthGuard())
   async updateUserById(
     @Param('id') id: string,
     @Body() user: User,
@@ -49,6 +54,7 @@ export class AuthController {
   }
 
   @Delete('user/:id')
+  @UseGuards(AuthGuard())
   async deleteUserById(@Param('id') id: string): Promise<User> {
     return this.authService.deleteById(id);
   }
