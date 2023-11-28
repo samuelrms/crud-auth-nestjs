@@ -1,4 +1,3 @@
-![image](https://nestjs.com/img/logo-small.svg)
 ![image](https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456)
 
 ## Description
