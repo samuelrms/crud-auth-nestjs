@@ -6,7 +6,9 @@ import {
   Param,
   Post,
   Put,
+  Query,
 } from '@nestjs/common';
+import { ParsedUrlQuery } from 'node:querystring';
 import { BookService } from './book.service';
 import { Book } from './schemas/book.schema';
 import { CreateBookDto } from './dto/create-book.dto';
@@ -17,8 +19,10 @@ export class BookController {
   constructor(private bookService: BookService) {}
 
   @Get()
-  async getAllBooks(): Promise<Book[]> {
-    return this.bookService.findAll();
+  async getAllBooks(
+    @Query() query: ParsedUrlQuery,
+  ): Promise<{ books: Book[]; total: number }> {
+    return this.bookService.findAll(query);
   }
 
   @Post('create-book')

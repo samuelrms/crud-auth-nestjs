@@ -3,9 +3,11 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
+import { ParsedUrlQuery } from 'node:querystring';
 import { InjectModel } from '@nestjs/mongoose';
-import { Book } from './schemas/book.schema';
 import * as mongoose from 'mongoose';
+
+import { Book } from './schemas/book.schema';
 
 @Injectable()
 export class BookService {
@@ -14,9 +16,30 @@ export class BookService {
     private bookModel: mongoose.Model<Book>,
   ) {}
 
-  async findAll(): Promise<Book[]> {
-    const books = await this.bookModel.find();
-    return books;
+  async findAll(
+    query: ParsedUrlQuery,
+  ): Promise<{ books: Book[]; total: number }> {
+    const resPerPage = Number(query.perPage) || 20;
+    const currentPage = Number(query.page) || 1;
+    const skip = resPerPage * (currentPage - 1);
+
+    const keyword = query.keyword
+      ? {
+          title: {
+            $regex: query.keyword as string,
+            $options: 'i',
+          },
+        }
+      : {};
+    const count = await this.bookModel.countDocuments({ ...keyword });
+    const books = await this.bookModel
+      .find({ ...keyword })
+      .skip(skip)
+      .limit(resPerPage);
+    return {
+      total: count,
+      books,
+    };
   }
 
   async create(book: Book): Promise<Book> {
