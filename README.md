@@ -1,4 +1,4 @@
-![image](https://github.com/samuelrms/crud-auth-nestjs/assets/92615688/f93fe03b-0dd3-4117-b9cc-116fa959c9ce)
+# Crud Auth NestJs with mongodb
 
 
 ## Description
@@ -36,3 +36,5 @@ $ pnpm run test:e2e
 # test coverage
 $ pnpm run test:cov
 ```
+
+![image](https://github.com/samuelrms/crud-auth-nestjs/assets/92615688/f93fe03b-0dd3-4117-b9cc-116fa959c9ce)
