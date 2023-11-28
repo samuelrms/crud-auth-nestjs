@@ -30,6 +30,36 @@ export class AppService {
 
         privateRoutes: [
           {
+            name: 'users',
+            method: Methods.GET,
+            path: '/auth/users',
+            description: 'Get all users',
+          },
+          {
+            name: 'userById',
+            method: Methods.GET,
+            path: '/auth/user/:id',
+            description: 'Get user by id',
+          },
+          {
+            name: 'updateUserByID',
+            method: Methods.PUT,
+            path: '/auth/user/:id',
+            description: 'Get user by id',
+          },
+          {
+            name: 'deleteUserById',
+            method: Methods.DELETE,
+            path: '/auth/user/:id',
+            description: 'Get user by id',
+          },
+          {
+            name: 'getBookById',
+            method: Methods.GET,
+            path: '/books/:id',
+            description: 'Get a book by id',
+          },
+          {
             name: 'books',
             method: Methods.GET,
             path: '/books',
