@@ -13,15 +13,14 @@ import { BookService } from './book.service';
 import { Book } from './schemas/book.schema';
 import { CreateBookDto } from './dto/create-book.dto';
 import { UpdateBookDto } from './dto/update-book.dto';
+import { BooksProps } from './types/books.types';
 
 @Controller('books')
 export class BookController {
   constructor(private bookService: BookService) {}
 
   @Get()
-  async getAllBooks(
-    @Query() query: ParsedUrlQuery,
-  ): Promise<{ books: Book[]; total: number }> {
+  async getAllBooks(@Query() query: ParsedUrlQuery): Promise<BooksProps> {
     return this.bookService.findAll(query);
   }
 

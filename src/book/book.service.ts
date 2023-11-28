@@ -5,20 +5,19 @@ import {
 } from '@nestjs/common';
 import { ParsedUrlQuery } from 'node:querystring';
 import { InjectModel } from '@nestjs/mongoose';
-import * as mongoose from 'mongoose';
+import { Model, isValidObjectId } from 'mongoose';
 
 import { Book } from './schemas/book.schema';
+import { BooksProps } from './types/books.types';
 
 @Injectable()
 export class BookService {
   constructor(
     @InjectModel(Book.name)
-    private bookModel: mongoose.Model<Book>,
+    private bookModel: Model<Book>,
   ) {}
 
-  async findAll(
-    query: ParsedUrlQuery,
-  ): Promise<{ books: Book[]; total: number }> {
+  async findAll(query: ParsedUrlQuery): Promise<BooksProps> {
     const resPerPage = Number(query.perPage) || 20;
     const currentPage = Number(query.page) || 1;
     const skip = resPerPage * (currentPage - 1);
@@ -31,13 +30,13 @@ export class BookService {
           },
         }
       : {};
-    const count = await this.bookModel.countDocuments({ ...keyword });
+    const total = await this.bookModel.countDocuments({ ...keyword });
     const books = await this.bookModel
       .find({ ...keyword })
       .skip(skip)
       .limit(resPerPage);
     return {
-      total: count,
+      total,
       books,
     };
   }
@@ -48,7 +47,7 @@ export class BookService {
   }
 
   async findById(id: string): Promise<Book> {
-    const isValidId = mongoose.isValidObjectId(id);
+    const isValidId = isValidObjectId(id);
 
     if (!isValidId) {
       throw new BadRequestException('Please provide a valid id');
@@ -64,7 +63,7 @@ export class BookService {
   }
 
   async updateById(id: string, book: Book): Promise<Book> {
-    const isValidId = mongoose.isValidObjectId(id);
+    const isValidId = isValidObjectId(id);
 
     if (!isValidId) {
       throw new BadRequestException('Please provide a valid id');
