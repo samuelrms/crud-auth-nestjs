@@ -45,13 +45,13 @@ export class AppService {
             name: 'updateUserByID',
             method: Methods.PUT,
             path: '/auth/user/:id',
-            description: 'Get user by id',
+            description: 'Update user by id',
           },
           {
             name: 'deleteUserById',
             method: Methods.DELETE,
             path: '/auth/user/:id',
-            description: 'Get user by id',
+            description: 'Delete user by id',
           },
           {
             name: 'getBookById',
