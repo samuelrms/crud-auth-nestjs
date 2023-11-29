@@ -9,7 +9,7 @@ import { Model, isValidObjectId } from 'mongoose';
 
 import { Book } from './schemas/book.schema';
 import { BooksProps } from './types/books.types';
-import { User } from 'src/auth/schema/user.schema';
+import { User } from '../auth/schema/user.schema';
 
 @Injectable()
 export class BookService {
